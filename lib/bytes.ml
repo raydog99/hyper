@@ -31,3 +31,29 @@ let rec prescan_byte_stream input_byte_stream =
           in
           next_byte_check next_byte
       | _ -> None
+  in
+
+  let rec loop position =
+    if position >= String.length input_byte_stream then
+      None
+    else
+      let byte = Char.code input_byte_stream.[position] in
+      match byte with
+      | 0x22 | 0x27 ->
+          let quote_mark = byte in
+          let rec quote_loop position =
+            if position >= String.length input_byte_stream then
+              None
+            else
+              let current_byte = Char.code input_byte_stream.[position] in
+              if current_byte = quote_mark then
+                Some (quote_mark, position + 1)
+              else if current_byte >= 0x41 && current_byte <= 0x5A then
+                quote_loop (position + 1)
+              else
+                value (position + 1)
+          in
+          quote_loop (position + 1)
+      | 0x3C when position + 5 < String.length input_byte_stream &&
+                      Char.code input_byte_stream.[position + 1] = 0x21 &&
+                      Char.code input_byte_stream.[position
