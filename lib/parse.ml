@@ -29,4 +29,19 @@ let rec parse_html bytes =
     | InHead :: _ ->
         handle_in_head element
     | _ -> ()
+  and handle_in_body element =
+    match element.tag_name with
+    | "p" ->
+        print_endline ("Handling paragraph in InBody mode")
+    | "a" ->
+        print_endline ("Handling anchor in InBody mode")
+    | _ -> ()
+  and handle_in_head element =
+    match element.tag_name with
+    | "title" ->
+        print_endline ("Handling title in InHead mode")
+    | "meta" ->
+        print_endline ("Handling meta in InHead mode")
+    | _ -> ()
+  in
   process_byte 0 [InBody] [];
