@@ -63,4 +63,29 @@ let rec parse_html bytes =
     in
     remove_earliest_same_element ();
     active_formatting_elements := element :: !active_formatting_elements
+  and reconstruct_active_formatting_elements () =
+    match !active_formatting_elements with
+    | [] -> ()
+    | last :: _ when last.token = "marker" || List.mem last.tag_name stack_of_open_elements ->
+        ()
+    | entry :: entries ->
+        let rec rewind entries =
+          match entries with
+          | [] -> ()
+          | marker :: rest when marker.token = "marker" || List.mem marker.tag_name stack_of_open_elements ->
+              ()
+          | entry :: rest ->
+              rewind rest
+        in
+        let rec advance entries =
+          match entries with
+          | [] -> ()
+          | current :: rest ->
+              let new_element = create_html_element_for_token current.token in
+              replace_entry current new_element;
+              if current <> last then
+                advance rest
+        in
+        rewind entries;
+        advance entries
   process_byte 0 [InBody] [];
