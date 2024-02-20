@@ -6,6 +6,12 @@ type insertion_mode =
   | InHead
   | InBody
 
+type active_formatting_element = {
+  tag_name: string;
+  attributes: (string * string) list;
+  token: string;
+}
+
 let rec parse_html bytes =
   let open insertion_mode in
   let open template_insertion_mode in
@@ -44,4 +50,17 @@ let rec parse_html bytes =
         print_endline ("Handling meta in InHead mode")
     | _ -> ()
   in
+  and push_active_formatting_element element =
+    let rec remove_earliest_same_element () =
+      match !active_formatting_elements with
+      | [] -> ()
+      | hd :: tl ->
+          if hd.tag_name = element.tag_name &&
+             hd.attributes = element.attributes then
+            active_formatting_elements := tl
+          else
+            remove_earliest_same_element ()
+    in
+    remove_earliest_same_element ();
+    active_formatting_elements := element :: !active_formatting_elements
   process_byte 0 [InBody] [];
