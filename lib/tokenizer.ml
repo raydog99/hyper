@@ -66,3 +66,24 @@ let rec tokenize ctx =
   | AttributeValueSingleQuoted -> attribute_value_single_quoted_state ctx
   | AttributeValueUnquoted -> attribute_value_unquoted_state ctx
   | CharacterReference -> character_reference_state ctx
+
+and data_state ctx =
+  let c = read_char ctx in
+  match c with
+  | '&' ->
+    ctx.state <- Data;
+    consume_char ctx;
+    tokenize ctx (* Switch to the character reference state *)
+  | '<' ->
+    ctx.state <- Data;
+    consume_char ctx;
+    tokenize ctx (* Switch to the tag open state *)
+  | '\000' ->
+    ctx.state <- Data;
+    consume_char ctx;
+    emit_token ctx (Character '\xFFFD') (* Unexpected-null-character parse error *)
+  | EOF -> process_eof ctx
+  | _ ->
+    consume_char ctx;
+    ctx.token_buffer <- ctx.token_buffer ^ (String.make 1 c);
+    tokenize ctx (* Emit the current input character as a character token *)
