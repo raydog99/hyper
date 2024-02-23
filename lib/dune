@@ -1,2 +1,9 @@
 (library
- (name tab))
+ (name html)
+ (public_name html)
+ (modules
+  bytes
+  parse
+  tokenizer
+  tree_constructor)
+)
