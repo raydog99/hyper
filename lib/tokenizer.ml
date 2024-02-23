@@ -87,3 +87,58 @@ and data_state ctx =
     consume_char ctx;
     ctx.token_buffer <- ctx.token_buffer ^ (String.make 1 c);
     tokenize ctx (* Emit the current input character as a character token *)
+
+and rcdata_state ctx =
+  let c = read_char ctx in
+  match c with
+  | '&' ->
+    ctx.state <- RCDATA;
+    consume_char ctx;
+    tokenize ctx (* Switch to the character reference state *)
+  | '<' ->
+    ctx.state <- RCDATA;
+    consume_char ctx;
+    tokenize ctx (* Switch to the RCDATA less-than sign state *)
+  | '\000' ->
+    ctx.state <- RCDATA;
+    consume_char ctx;
+    emit_token ctx (Character '\xFFFD') (* Unexpected-null-character parse error *)
+  | EOF -> process_eof ctx
+  | _ ->
+    consume_char ctx;
+    ctx.token_buffer <- ctx.token_buffer ^ (String.make 1 c);
+    tokenize ctx (* Emit the current input character as a character token *)
+
+and rawtext_state ctx =
+  let c = read_char ctx in
+  match c with
+  | '<' ->
+    ctx.state <- RAWTEXT;
+    consume_char ctx;
+    tokenize ctx (* Switch to the RAWTEXT less-than sign state *)
+  | '\000' ->
+    ctx.state <- RAWTEXT;
+    consume_char ctx;
+    emit_token ctx (Character '\xFFFD') (* Unexpected-null-character parse error *)
+  | EOF -> process_eof ctx
+  | _ ->
+    consume_char ctx;
+    ctx.token_buffer <- ctx.token_buffer ^ (String.make 1 c);
+    tokenize ctx (* Emit the current input character as a character token *)
+
+and scriptdata_state ctx =
+  let c = read_char ctx in
+  match c with
+  | '<' ->
+    ctx.state <- ScriptData;
+    consume_char ctx;
+    tokenize ctx (* Switch to the script data less-than sign state *)
+  | '\000' ->
+    ctx.state <- ScriptData;
+    consume_char ctx;
+    emit_token ctx (Character '\xFFFD') (* Unexpected-null-character parse error *)
+  | EOF -> process_eof ctx
+  | _ ->
+    consume_char ctx;
+    ctx.token_buffer <- ctx.token_buffer ^ (String.make 1 c);
+    tokenize ctx (* Emit the current input character as a character token *)
