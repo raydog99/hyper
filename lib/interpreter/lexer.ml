@@ -9,6 +9,14 @@ type token =
   | TemplateSubstitutionTail
   | HashbangComment
 
+let is_whitespace_or_format_control = function
+  | ' ' | '\t' | '\n' | '\r' | '\x0C' | '\x0085' | '\u{200E}' | '\u{200F}' | '\u{2028}' | '\u{2029}' -> true
+  | _ -> false
+
+let is_whitespace_or_format_control = function
+  | ' ' | '\t' | '\n' | '\r' | '\x0C' | '\x0085' | '\u{200E}' | '\u{200F}' | '\u{2028}' | '\u{2029}' -> true
+  | _ -> false
+
 let rec lexer input =
   let is_whitespace = function ' ' | '\t' -> true | _ -> false in
   let is_line_terminator = function '\n' | '\r' -> true | _ -> false in
@@ -16,7 +24,7 @@ let rec lexer input =
 
   let rec consume_whitespace input =
     match input with
-    | c :: cs when is_whitespace c -> consume_whitespace cs
+    | c :: cs when is_whitespace_or_format_control c -> consume_whitespace_or_format_control cs
     | _ -> input
   in
 
