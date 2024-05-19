@@ -1,4 +1,0 @@
-(executable
- (name interpreter)
- (libraries)
- (modules lexer))
