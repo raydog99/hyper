@@ -1,0 +1,3 @@
+/Users/raymonddeng/desktop/github/efficient/efficient_cpp/build/CMakeFiles/test_s.dir
+/Users/raymonddeng/desktop/github/efficient/efficient_cpp/build/CMakeFiles/edit_cache.dir
+/Users/raymonddeng/desktop/github/efficient/efficient_cpp/build/CMakeFiles/rebuild_cache.dir

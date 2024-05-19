@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc libefficient_cpp_lib.a CMakeFiles/efficient_cpp_lib.dir/src/s.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib libefficient_cpp_lib.a
