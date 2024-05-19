@@ -1,0 +1,4 @@
+(library
+  (name efficient_ocaml)
+  (public_name efficient_ocaml)
+  (libraries base))

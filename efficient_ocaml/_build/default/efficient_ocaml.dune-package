@@ -1,0 +1,45 @@
+(lang dune 3.7)
+(name efficient_ocaml)
+(sections (lib .) (libexec .) (bin ../../bin))
+(files
+ (lib
+  (META
+   dune-package
+   efficient_ocaml.a
+   efficient_ocaml.cma
+   efficient_ocaml.cmi
+   efficient_ocaml.cmt
+   efficient_ocaml.cmx
+   efficient_ocaml.cmxa
+   efficient_ocaml.ml
+   efficient_ocaml__S_combinator.cmi
+   efficient_ocaml__S_combinator.cmt
+   efficient_ocaml__S_combinator.cmx
+   opam
+   s_combinator.ml))
+ (libexec (efficient_ocaml.cmxs))
+ (bin (efficient_ocaml)))
+(library
+ (name efficient_ocaml)
+ (kind normal)
+ (archives (byte efficient_ocaml.cma) (native efficient_ocaml.cmxa))
+ (plugins (byte efficient_ocaml.cma) (native efficient_ocaml.cmxs))
+ (native_archives efficient_ocaml.a)
+ (requires base)
+ (main_module_name Efficient_ocaml)
+ (modes byte native)
+ (modules
+  (wrapped
+   (group
+    (alias
+     (obj_name efficient_ocaml)
+     (visibility public)
+     (kind alias)
+     (source (path Efficient_ocaml) (impl (path efficient_ocaml.ml-gen))))
+    (name Efficient_ocaml)
+    (modules
+     (module
+      (obj_name efficient_ocaml__S_combinator)
+      (visibility public)
+      (source (path S_combinator) (impl (path s_combinator.ml))))))
+   (wrapped true))))

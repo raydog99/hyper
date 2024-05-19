@@ -1,0 +1,4 @@
+(executable
+ (public_name efficient_ocaml)
+ (name main)
+ (libraries efficient_ocaml))

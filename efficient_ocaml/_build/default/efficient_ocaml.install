@@ -1,0 +1,22 @@
+lib: [
+  "_build/install/default/lib/efficient_ocaml/META"
+  "_build/install/default/lib/efficient_ocaml/dune-package"
+  "_build/install/default/lib/efficient_ocaml/efficient_ocaml.a"
+  "_build/install/default/lib/efficient_ocaml/efficient_ocaml.cma"
+  "_build/install/default/lib/efficient_ocaml/efficient_ocaml.cmi"
+  "_build/install/default/lib/efficient_ocaml/efficient_ocaml.cmt"
+  "_build/install/default/lib/efficient_ocaml/efficient_ocaml.cmx"
+  "_build/install/default/lib/efficient_ocaml/efficient_ocaml.cmxa"
+  "_build/install/default/lib/efficient_ocaml/efficient_ocaml.ml"
+  "_build/install/default/lib/efficient_ocaml/efficient_ocaml__S_combinator.cmi"
+  "_build/install/default/lib/efficient_ocaml/efficient_ocaml__S_combinator.cmt"
+  "_build/install/default/lib/efficient_ocaml/efficient_ocaml__S_combinator.cmx"
+  "_build/install/default/lib/efficient_ocaml/opam"
+  "_build/install/default/lib/efficient_ocaml/s_combinator.ml"
+]
+libexec: [
+  "_build/install/default/lib/efficient_ocaml/efficient_ocaml.cmxs"
+]
+bin: [
+  "_build/install/default/bin/efficient_ocaml"
+]

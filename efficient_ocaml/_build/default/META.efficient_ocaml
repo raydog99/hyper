@@ -1,0 +1,6 @@
+description = ""
+requires = "base"
+archive(byte) = "efficient_ocaml.cma"
+archive(native) = "efficient_ocaml.cmxa"
+plugin(byte) = "efficient_ocaml.cma"
+plugin(native) = "efficient_ocaml.cmxs"
