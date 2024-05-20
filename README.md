@@ -1,3 +1,3 @@
 # efficient
 
-Modern combinators in several languages
+Evolutionary combinators in several languages
