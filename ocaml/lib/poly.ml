@@ -27,3 +27,25 @@ module Poly = struct
     in
     product' p q
 end
+
+module PolyComonoid (C : Comonoid) : Comonoid with type 'a comonoid = 'a poly = struct
+  type 'a comonoid = 'a poly
+
+  let counit p =
+    match p with
+    | [] -> ()
+    | (c, 0) :: _ -> C.counit c
+    | _ -> failwith "Polynomial must be constant to have a counit"
+
+  let comult p =
+    let rec aux p xs ys =
+      match p with
+      | [] -> (xs, ys)
+      | (c, 0) :: rest ->
+         let (c1, c2) = C.comult c in
+         aux rest ((c1, 0) :: xs) ((c2, 0) :: ys)
+      | (c, n) :: rest ->
+         aux rest ((c, n) :: xs) ((C.counit c, n) :: ys)
+    in
+    aux p [] []
+end
