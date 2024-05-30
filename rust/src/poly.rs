@@ -63,3 +63,54 @@ where
         Poly(coeffs)
     }
 }
+
+use std::ops::{Add, Mul};
+
+trait Comonoid {
+    type ComonoidType;
+    fn counit(&self) -> ();
+    fn comult(&self) -> (Self::ComonoidType, Self::ComonoidType);
+}
+
+#[derive(Debug, PartialEq, Eq, Clone)]
+struct PolyTerm<T: Comonoid> {
+    coeff: T::ComonoidType,
+    exp: u32,
+}
+
+impl<T: Comonoid> PolyTerm<T> {
+    fn new(coeff: T::ComonoidType, exp: u32) -> Self {
+        PolyTerm { coeff, exp }
+    }
+}
+
+#[derive(Debug, PartialEq, Eq, Clone)]
+struct Poly<T: Comonoid>(Vec<PolyTerm<T>>);
+
+impl<T: Comonoid> Comonoid for Poly<T> {
+    type ComonoidType = Poly<T>;
+
+    fn counit(&self) -> () {
+        match self.0.first() {
+            Some(term) if term.exp == 0 => term.coeff.counit(),
+            None => (),
+            _ => panic!("Polynomial must be constant to have a counit"),
+        }
+    }
+
+    fn comult(&self) -> (Poly<T>, Poly<T>) {
+        let mut xs = Vec::new();
+        let mut ys = Vec::new();
+        for term in &self.0 {
+            if term.exp == 0 {
+                let (c1, c2) = term.coeff.comult();
+                xs.push(PolyTerm::new(c1, 0));
+                ys.push(PolyTerm::new(c2, 0));
+            } else {
+                xs.push(term.clone());
+                ys.push(PolyTerm::new(term.coeff.counit(), term.exp));
+            }
+        }
+        (Poly(xs), Poly(ys))
+    }
+}
