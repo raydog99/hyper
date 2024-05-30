@@ -17,3 +17,25 @@ instance Num a => Num (Poly a) where
 
 eval :: Num a => Poly a -> a -> a
 eval (Poly xs) x = sum $ zipWith (*) xs (map (x ^) [0..])
+
+module PolyComonoid (C : Comonoid) where
+
+import Prelude hiding (counit)
+
+newtype Poly a = Poly { getPoly :: [(a, Int)] }
+
+instance Comonoid a => Comonoid (Poly a) where
+  counit (Poly p) =
+    case p of
+      [] -> ()
+      (c, 0) : _ -> counit c
+      _ -> error "Polynomial must be constant to have a counit"
+
+  comult (Poly p) =
+    let aux [] xs ys = (Poly xs, Poly ys)
+        aux ((c, 0) : rest) xs ys =
+          let (c1, c2) = comult c
+           in aux rest ((c1, 0) : xs) ((c2, 0) : ys)
+        aux ((c, n) : rest) xs ys =
+          aux rest ((c, n) : xs) ((counit c, n) : ys)
+     in aux p [] []
