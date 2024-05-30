@@ -53,3 +53,40 @@ func max(a, b int) int {
     }
     return b
 }
+
+type Comonoid interface {
+    Counit() interface{}
+    Comult() (interface{}, interface{})
+}
+
+type Poly []PolyTerm
+
+type PolyTerm struct {
+    Coeff interface{}
+    Exp   int
+}
+
+func (p Poly) Counit() interface{} {
+    if len(p) == 0 {
+        return nil
+    }
+    if p[0].Exp == 0 {
+        return p[0].Coeff.(Comonoid).Counit()
+    }
+    panic("Polynomial must be constant to have a counit")
+}
+
+func (p Poly) Comult() (Poly, Poly) {
+    var xs, ys Poly
+    for _, term := range p {
+        if term.Exp == 0 {
+            c1, c2 := term.Coeff.(Comonoid).Comult()
+            xs = append(xs, PolyTerm{c1, 0})
+            ys = append(ys, PolyTerm{c2, 0})
+        } else {
+            xs = append(xs, term)
+            ys = append(ys, PolyTerm{term.Coeff.(Comonoid).Counit(), term.Exp})
+        }
+    }
+    return xs, ys
+}
