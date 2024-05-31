@@ -49,3 +49,8 @@ module PolyComonoid (C : Comonoid) : Comonoid with type 'a comonoid = 'a poly = 
     in
     aux p [] []
 end
+
+type poly = { coef : float list; const : float }
+
+let corolla p =
+  { coef = p.const :: p.coef; const = 0.0 }
