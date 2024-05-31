@@ -76,3 +76,10 @@ public:
 private:
     Poly<T> poly;
 };
+
+template <typename T>
+Poly<T> corolla(const Poly<T>& p) {
+    Poly<T> result(p.begin(), p.end());
+    result.insert(result.begin(), 0);
+    return result;
+}
