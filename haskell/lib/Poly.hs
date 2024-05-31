@@ -39,3 +39,8 @@ instance Comonoid a => Comonoid (Poly a) where
         aux ((c, n) : rest) xs ys =
           aux rest ((c, n) : xs) ((counit c, n) : ys)
      in aux p [] []
+
+data Poly a = Poly [a] a deriving (Show, Eq)
+
+corolla :: Num a => Poly a -> Poly a
+corolla (Poly coef const) = Poly (const : coef) 0
