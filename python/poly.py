@@ -1,4 +1,5 @@
-from typing import Generic, TypeVar, Tuple, Callable, TypeVar
+from __future__ import annotations
+from typing import Generic, TypeVar, Tuple, Callable, TypeVar, List
 
 T = TypeVar('T', covariant = True)
 
@@ -71,3 +72,17 @@ class PolyComonoid(Comonoid[Poly[T]]):
 
     def comult(self) -> Tuple[Poly[T], Poly[T]]:
         return poly_comult(self.poly)
+
+class Poly(Generic[T]):
+    def __init__(self, coef: List[complex], const: complex = 0):
+        self.coef = coef
+        self.const = const
+
+    def eval(self, x: complex) -> complex:
+        result = self.const
+        for i, coef in enumerate(self.coef):
+            result += coef * x ** i
+        return result
+
+    def corolla(self) -> Poly[T]:
+        return Poly([self.const] + self.coef, 0)
