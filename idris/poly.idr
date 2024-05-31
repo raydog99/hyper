@@ -58,3 +58,11 @@ PolyComonoid = MkComonoid PolyCounit PolyComult where
       in aux rest ((c1, 0) :: xs) ((c2, 0) :: ys)
     aux ((c, n) :: rest) xs ys =
       aux rest ((c, n) :: xs) ((counit c, n) :: ys)
+
+data Poly : Type -> Type where
+  Nil : Poly a
+  (::) : a -> Poly a -> Poly a
+
+corolla : Poly a -> Poly a
+corolla (x :: xs) = 0 :: x :: xs
+corolla Nil = Nil
