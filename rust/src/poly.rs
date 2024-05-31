@@ -114,3 +114,19 @@ impl<T: Comonoid> Comonoid for Poly<T> {
         (Poly(xs), Poly(ys))
     }
 }
+
+struct Poly<T> {
+    coef: Vec<T>,
+    const: T,
+}
+
+impl<T> Poly<T>
+where
+    T: Copy,
+{
+    fn corolla(&self) -> Poly<T> {
+        let mut coef = vec![self.const];
+        coef.extend_from_slice(&self.coef);
+        Poly { coef, const: T::default() }
+    }
+}
