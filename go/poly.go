@@ -90,3 +90,13 @@ func (p Poly) Comult() (Poly, Poly) {
     }
     return xs, ys
 }
+
+type Poly struct {
+    coef []float64
+    const float64
+}
+
+func corolla(p Poly) Poly {
+    coef := append([]float64{p.const}, p.coef...)
+    return Poly{coef, 0}
+}
