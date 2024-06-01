@@ -64,6 +64,23 @@ where
     }
 }
 
+
+impl<T> Poly<T>
+where
+    T: Clone + Eq + Add<Output = T> + Mul<Output = T> + Copy,
+{
+    fn coproduct(&self, other: &Poly<T>) -> Vec<Poly<T>> {
+        let mut result = Vec::new();
+        for x in &self.0 {
+            result.push(Poly(vec![x.clone()]));
+        }
+        for y in &other.0 {
+            result.push(Poly(vec![y.clone()]));
+        }
+        result
+    }
+}
+
 use std::ops::{Add, Mul};
 
 trait Comonoid {
