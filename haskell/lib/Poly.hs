@@ -18,6 +18,9 @@ instance Num a => Num (Poly a) where
 eval :: Num a => Poly a -> a -> a
 eval (Poly xs) x = sum $ zipWith (*) xs (map (x ^) [0..])
 
+coproduct :: Num a => Poly a -> Poly a -> [Either (Poly a) (Poly a)]
+coproduct (Poly xs) (Poly ys) = [Left (Poly [x]) | x <- xs] ++ [Right (Poly [y]) | y <- ys]
+
 module PolyComonoid (C : Comonoid) where
 
 import Prelude hiding (counit)
