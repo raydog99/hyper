@@ -28,6 +28,14 @@ class Poly(list):
                 coeffs[i + j] += coeff1 * coeff2
         return Poly(coeffs)
 
+    def coproduct(self, other: 'Poly[T]') -> list['Poly[T]']:
+        result = []
+        for x in self:
+            result.append(Poly([x]))
+        for y in other:
+            result.append(Poly([y]))
+        return result
+
 class Comonoid(Generic[T]):
     def counit(self) -> None:
         raise NotImplementedError
