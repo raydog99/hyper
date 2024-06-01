@@ -4,6 +4,26 @@
 
 using namespace boost::math::tools;
 
+typedef boost::variant<
+    std::vector<int>,
+    std::vector<int>
+> Poly;
+
+Poly coproduct(const Poly& p, const Poly& q) {
+    std::vector<Poly> result;
+    p.apply_visitor([&](const std::vector<int>& xs) {
+        for (int x : xs) {
+            result.push_back(std::vector<int>{x});
+        }
+    });
+    q.apply_visitor([&](const std::vector<int>& ys) {
+        for (int y : ys) {
+            result.push_back(std::vector<int>{y});
+        }
+    });
+    return boost::variant<std::vector<Poly>>(result);
+}
+
 template <typename T>
 polynomial<T> create_poly(const std::vector<T>& coeffs) {
     return polynomial<T>(coeffs);
