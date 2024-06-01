@@ -33,6 +33,11 @@ product p q = conv $ concatMap (\(x, y) => map (*x) (drop y q)) zipPairs
     zipPairs : Vect (length p) (a, Nat)
     zipPairs = zipWith (\x, y => (index y p, y)) [0..length p-1]
 
+coproduct : Poly a -> Poly a -> List (Either (Poly a) (Poly a))
+coproduct p q = map Left (map singleton p) ++ map Right (map singleton q)
+  where
+    singleton : a -> Poly a
+    singleton x = [x]
 
 module PolyComonoid
 
