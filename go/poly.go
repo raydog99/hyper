@@ -54,6 +54,17 @@ func max(a, b int) int {
     return b
 }
 
+func (p Poly) Coproduct(q Poly) []interface{} {
+    result := make([]interface{}, 0, len(p)+len(q))
+    for _, x := range p {
+        result = append(result, []float64{x})
+    }
+    for _, y := range q {
+        result = append(result, []float64{y})
+    }
+    return result
+}
+
 type Comonoid interface {
     Counit() interface{}
     Comult() (interface{}, interface{})
