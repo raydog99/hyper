@@ -54,3 +54,21 @@ type poly = { coef : float list; const : float }
 
 let corolla p =
   { coef = p.const :: p.coef; const = 0.0 }
+
+module PolyCoproduct = struct
+  type 'a poly = 'a list
+
+  let coproduct (p : 'a poly) (q : 'a poly) : 'a poly poly =
+    let rec aux p q xs ys =
+      match p, q with
+      | [], [] -> (xs, ys)
+      | [], y::ys -> aux [] ys xs (y::ys)
+      | x::xs, [] -> aux xs [] (x::xs) ys
+      | x::xs, y::ys -> aux xs ys (P [x]::xs) (Q [y]::ys)
+    in
+    let (ps, qs) = aux p q [] [] in
+    ps @ qs
+
+  and P x = x
+  and Q x = x
+end
