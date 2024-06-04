@@ -31,3 +31,14 @@ Display a = (p : pos a ** dis a p)
 
 AsFunctor : Arena -> Type -> Type
 AsFunctor a y = (p : pos a ** dis a p -> y)
+
+duoidal : {a1, a2, b1, b2 : Arena} -> Lens ((a1 :<>: a2) :*: (b1 :<>: b2)) ((a1 :*: b1) :<>: (a2 :*: b2))
+duoidal {a1} {a2} {b1} {b2} =
+  let x = (a1 :<>: a2) :*: (b1 :<>: b2)
+      y = (a1 :*: b1) :<>: (a2 :*: b2)
+      o : Pos x -> Pos y
+      o ((p1 ** p2), (q1 ** q2)) = ((p1, q1), \d => (fst d $> p2, snd d $> q2))
+      i : (p : Pos x) -> Dis y (o p) -> Dis x p
+      i ((p1 ** p2), (q1 ** q2)) ((de1 ** de2) : Dis y (o ((p1 ** p2), (q1 ** q2)))) =
+        ((fst de1 :** fst de2), (snd de1 :** snd de2))
+  in MkLens o i
