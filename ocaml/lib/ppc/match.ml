@@ -72,7 +72,6 @@ module Match = struct
         "lowerCamelCase";
         "UPPER_SNAKE_CASE";
         "lower_snake_case";
-        "lsif.hover";
       ]
 
   let parseTemplate =
